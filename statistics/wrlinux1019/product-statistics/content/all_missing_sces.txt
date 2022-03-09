@@ -142,6 +142,7 @@ avahi_disable_publishing
 banner_etc_issue
 banner_etc_motd
 chronyd_or_ntpd_set_maxpoll
+chronyd_server_directive
 chronyd_specify_remote_server
 configure_firewalld_ports
 configure_firewalld_rate_limiting
@@ -163,6 +164,7 @@ directory_permissions_var_log_audit
 disable_ctrlaltdel_reboot
 disable_host_auth
 disable_prelink
+disallow_bypass_password_sudo
 display_login_attempts
 ensure_gpgcheck_local_packages
 ensure_logrotate_activated
@@ -235,8 +237,12 @@ gnome_gdm_disable_xdmcp
 grub2_admin_username
 grub2_enable_fips_mode
 grub2_enable_iommu_force
+grub2_mce_argument
 grub2_no_removeable_media
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
 grub2_password
+grub2_slab_nomerge_argument
 grub2_uefi_admin_username
 grub2_uefi_password
 harden_ssh_client_crypto_policy
@@ -268,6 +274,7 @@ network_sniffer_disabled
 no_all_squash_exports
 no_direct_root_logins
 no_empty_passwords
+no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_host_based_files
 no_netrc_files

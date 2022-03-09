@@ -206,6 +206,7 @@ bios_enable_execution_restrictions
 chronyd_or_ntpd_set_maxpoll
 chronyd_or_ntpd_specify_multiple_servers
 chronyd_or_ntpd_specify_remote_server
+chronyd_server_directive
 chronyd_specify_remote_server
 clean_components_post_updating
 configure_etc_hosts_deny
@@ -255,6 +256,7 @@ disable_ctrlaltdel_reboot
 disable_host_auth
 disable_prelink
 disable_users_coredumps
+disallow_bypass_password_sudo
 display_login_attempts
 enable_dconf_user_profile
 enable_pam_namespace
@@ -351,9 +353,13 @@ grub2_enable_fips_mode
 grub2_enable_iommu_force
 grub2_enable_selinux
 grub2_ipv6_disable_argument
+grub2_mce_argument
 grub2_no_removeable_media
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
 grub2_page_poison_argument
 grub2_password
+grub2_slab_nomerge_argument
 grub2_slub_debug_argument
 grub2_uefi_admin_username
 grub2_uefi_password
@@ -422,6 +428,7 @@ network_ipv6_static_address
 network_sniffer_disabled
 no_direct_root_logins
 no_empty_passwords
+no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_host_based_files
 no_legacy_plus_entries_etc_group
@@ -668,6 +675,7 @@ sudo_require_authentication
 sudo_require_reauthentication
 sudo_restrict_privilege_elevation_to_authorized
 sudo_vdsm_nopasswd
+sudoers_default_includedir
 sudoers_explicit_command_args
 sudoers_no_command_negation
 sudoers_no_root_target

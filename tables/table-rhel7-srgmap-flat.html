@@ -14245,9 +14245,11 @@ Both the holders of a digital certificate and the issuing authority must protect
 
 Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.</td>
 <td xml:lang="en-US">To configure the number of retry prompts that are permitted per-session:
+
 Edit the <code>pam_pwquality.so</code> statement in
 
-<code>/etc/pam.d/system-auth</code>  to show
+<code>/etc/pam.d/system-auth</code> to show
+
 
 <code>retry=<xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_password_pam_retry"></xccdf-1.1:sub></code>, or a lower value if site
 policy is more restrictive. The DoD requirement is a maximum of 3 prompts
@@ -14256,7 +14258,9 @@ per session.</td>
 <td>Verify the operating system enforces password complexity by requiring that at least one upper-case character be used. If it does not, this is a finding.</td>
 <td>To check how many retry attempts are permitted on a per-session basis, run the following command:
 
-$ grep pam_pwquality /etc/pam.d/system-auth 
+
+$ grep pam_pwquality /etc/pam.d/system-auth
+
 
 The retry parameter will indicate how many attempts are permitted.
 The DoD required value is less than or equal to 3.
@@ -14265,9 +14269,11 @@ This would appear as retry=3, or a lower value.
       </td>
 <td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3750r557600_fix">Configure the operating system to enforce password complexity by requiring that at least one upper-case character be used.</fixtext></td>
 <td>To configure the number of retry prompts that are permitted per-session:
+
 Edit the pam_pwquality.so statement in
 
-/etc/pam.d/system-auth  to show
+/etc/pam.d/system-auth to show
+
 
 retry=, or a lower value if site
 policy is more restrictive. The DoD requirement is a maximum of 3 prompts
@@ -15035,7 +15041,7 @@ Once the superuser account has been added,
 update the
 grub.cfg file by running:
 grub2-mkconfig -o /boot/grub2/grub.cfg</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -15151,7 +15157,7 @@ Once the superuser account has been added,
 update the
 grub.cfg file by running:
 grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -16571,7 +16577,7 @@ Managing excess capacity ensures that sufficient capacity is available to counte
 <td>SV-71125</td>
 <td>SRG-OS-000163-GPOS-00072</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inacti</td>
+<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</td>
 <td>CCE-27557-8:Set Interactive Session Timeout</td>
 <td>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. 
 
@@ -16584,7 +16590,9 @@ setting in a file loaded by <code>/etc/profile</code>, e.g.
 <pre>TMOUT=<xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_accounts_tmout"></xccdf-1.1:sub></pre>
 </td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of ina</td>
+<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements. 
+
+If it does not, this is a finding.</td>
 <td>Run the following command to ensure the TMOUT value is configured for all users
 on the system:
 
@@ -16594,7 +16602,7 @@ The output should return the following:
 TMOUT=
       Is it the case that value of TMOUT is not less than or equal to expected setting?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r557223_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes o</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r793151_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</fixtext></td>
 <td>Setting the TMOUT option in /etc/profile ensures that
 all user sessions will terminate based on inactivity. The TMOUT
 
@@ -16610,7 +16618,7 @@ TMOUT=</td>
 <td>SV-71125</td>
 <td>SRG-OS-000163-GPOS-00072</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inacti</td>
+<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</td>
 <td>CCE-27433-2:Set SSH Idle Timeout Interval</td>
 <td>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. 
 
@@ -16629,14 +16637,16 @@ If a shorter timeout has already been set for the login shell, that value will
 preempt any SSH setting made in <code>/etc/ssh/sshd_config</code>. Keep in mind that
 some processes may stop SSH  from correctly detecting that the user is idle.</td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of ina</td>
+<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements. 
+
+If it does not, this is a finding.</td>
 <td>Run the following command to see what the timeout interval is:
 $ sudo grep ClientAliveInterval /etc/ssh/sshd_config
 If properly configured, the output should be:
 ClientAliveInterval 
       Is it the case that it is commented out or not configured properly?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r557223_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes o</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r793151_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</fixtext></td>
 <td>SSH allows administrators to set an idle timeout interval. After this interval
 has passed, the idle user will be automatically logged out.
 
@@ -16659,7 +16669,7 @@ some processes may stop SSH  from correctly detecting that the user is idle.</td
 <td>SV-71125</td>
 <td>SRG-OS-000163-GPOS-00072</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inacti</td>
+<td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</td>
 <td>CCE-83399-6:Set SSH Client Alive Count Max to zero</td>
 <td>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. 
 
@@ -16678,7 +16688,9 @@ value of <code>0</code> in
 
 <code>/etc/ssh/sshd_config</code>:</td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of ina</td>
+<td>Verify the operating system terminates all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements. 
+
+If it does not, this is a finding.</td>
 <td>To ensure ClientAliveInterval is set correctly, run the following command:
 
 $ sudo grep ClientAliveCountMax /etc/ssh/sshd_config
@@ -16690,7 +16702,7 @@ In this case, the SSH idle timeout occurs precisely when
 the ClientAliveInterval is set.
       Is it the case that it is commented out or not configured properly?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r557223_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes o</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3784r793151_fix">Configure the operating system to terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</fixtext></td>
 <td>The SSH server sends at most ClientAliveCountMax messages
 during a SSH session and waits for a response from the SSH client.
 The option ClientAliveInterval configures timeout after
@@ -16788,11 +16800,11 @@ On BIOS-based machines, issue the following command as root:
 <td>V-56883</td>
 <td>SRG-OS-000191-GPOS-00080</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans not cover</td>
+<td>The operating system must employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where Endpoint Security Solution (ESS) is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by Computer Network Defense Service Provider (CNDSP).</td>
 <td>CCE-86257-3:Install McAfee Endpoint Security for Linux (ENSL)</td>
 <td>Without the use of automated mechanisms to scan for security flaws on a continuous and/or periodic basis, the operating system or other system components may remain vulnerable to the exploits presented by undetected software flaws.
 
-To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using HBSS and periodic scanning using other tools, as specified in the requirement.</td>
+To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using ESS and periodic scanning using other tools, as specified in the requirement.</td>
 <td xml:lang="en-US">Install McAfee Endpoint Security for Linux antivirus software
 which is provided for DoD systems and uses signatures to search for the
 presence of viruses on the filesystem.
@@ -16802,11 +16814,13 @@ The <code>mcafeetp</code> package can be installed with the following command:
 $ sudo yum install mcafeetp</pre>
 </td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system employs automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans not co</td>
+<td>Verify the operating system employs automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where ESS is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by CNDSP.
+
+If it does not, this is a finding.</td>
 <td>Run the following command to determine if the mcafeetp package is installed: $ rpm -q mcafeetp
       Is it the case that the package is not installed?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3787r557232_fix">Configure the operating system to employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans n</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3787r804655_fix">Configure the operating system to employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where ESS is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by CNDSP.</fixtext></td>
 <td>Install McAfee Endpoint Security for Linux antivirus software
 which is provided for DoD systems and uses signatures to search for the
 presence of viruses on the filesystem.
@@ -16823,26 +16837,28 @@ $ sudo yum install mcafeetp</td>
 <td>V-56883</td>
 <td>SRG-OS-000191-GPOS-00080</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans not cover</td>
+<td>The operating system must employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where Endpoint Security Solution (ESS) is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by Computer Network Defense Service Provider (CNDSP).</td>
 <td>CCE-86262-3:Ensure McAfee Endpoint Security for Linux (ENSL) is running</td>
 <td>Without the use of automated mechanisms to scan for security flaws on a continuous and/or periodic basis, the operating system or other system components may remain vulnerable to the exploits presented by undetected software flaws.
 
-To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using HBSS and periodic scanning using other tools, as specified in the requirement.</td>
+To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using ESS and periodic scanning using other tools, as specified in the requirement.</td>
 <td xml:lang="en-US">Install McAfee Endpoint Security for Linux antivirus software
 which is provided for DoD systems and uses signatures to search for the
 presence of viruses on the filesystem.</td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system employs automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans not co</td>
+<td>Verify the operating system employs automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where ESS is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by CNDSP.
+
+If it does not, this is a finding.</td>
 <td>To verify that McAfee Endpoint Security for Linux is
 running, run the following command:
 $ sudo ps -ef | grep -i mfetpd
       Is it the case that virus scanning software is not running?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3787r557232_fix">Configure the operating system to employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where HBSS is used; 30 days, for any additional internal network scans n</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3787r804655_fix">Configure the operating system to employ automated mechanisms to determine the state of system components with regard to flaw remediation using the following frequency: continuously, where ESS is used; 30 days, for any additional internal network scans not covered by ESS; and annually, for external scans by CNDSP.</fixtext></td>
 <td>Install McAfee Endpoint Security for Linux antivirus software
 which is provided for DoD systems and uses signatures to search for the
 presence of viruses on the filesystem.</td>
-<td>high</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -21029,7 +21045,7 @@ This requirement enables organizations to extend or limit auditing as necessary 
 If both the "b32" and "b64" audit rules for "SUID" files are not defined, this is a finding.
 If both the "b32" and "b64" audit rules for "SGID" files are not defined, this is a finding.</td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system provides the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time. If it does not, this is a fi</td>
+<td>Verify the operating system provides the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time. If it does not, this is a finding.</td>
 <td>Add or update the following rules in "/etc/audit/rules.d/audit.rules":
 
 -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid
@@ -21891,7 +21907,7 @@ If both the "b32" and "b64" audit rules for "SGID" files are not defined, this i
 <td>V-57267</td>
 <td>SRG-OS-000355-GPOS-00143</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must, for networked systems, compare internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designat</td>
+<td>The operating system must, for networked systems, compare internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).</td>
 <td>CCE-80439-3:Configure Time Service Maxpoll Interval</td>
 <td>Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
 
@@ -21902,15 +21918,17 @@ Organizations should consider endpoints that may not have regular access to the 
 <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub> in <code>/etc/ntp.conf</code> or
 <code>/etc/chrony.conf</code> to continuously poll time servers. To configure
 <code>maxpoll</code> in <code>/etc/ntp.conf</code> or <code>/etc/chrony.conf</code>
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 <pre>maxpoll <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub></pre>
 to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
-should be configured too.</td>
+should be configured too.
+If no <code>server</code> or <code>pool</code> directives are configured, the rule evaluates
+to pass.</td>
 <td>Applicable - Configurable</td>
 <td>Verify the operating system, for networked systems, compares internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS). If it does not, this is a finding.</td>
 <td>To verify that maxpoll has been set properly, perform the following:
 $ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf
-The output should return
+The output should return:
 maxpoll .
       Is it the case that it does not exist or maxpoll has not been set to the expected value?
       </td>
@@ -21919,10 +21937,12 @@ maxpoll .
  in /etc/ntp.conf or
 /etc/chrony.conf to continuously poll time servers. To configure
 maxpoll in /etc/ntp.conf or /etc/chrony.conf
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 maxpoll 
 to server directives. If using chrony any pool directives
-should be configured too.</td>
+should be configured too.
+If no server or pool directives are configured, the rule evaluates
+to pass.</td>
 <td>medium</td>
 <td></td>
 <td></td>
@@ -21943,15 +21963,17 @@ Organizations should also consider endpoints that may not have regular access to
 <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub> in <code>/etc/ntp.conf</code> or
 <code>/etc/chrony.conf</code> to continuously poll time servers. To configure
 <code>maxpoll</code> in <code>/etc/ntp.conf</code> or <code>/etc/chrony.conf</code>
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 <pre>maxpoll <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub></pre>
 to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
-should be configured too.</td>
+should be configured too.
+If no <code>server</code> or <code>pool</code> directives are configured, the rule evaluates
+to pass.</td>
 <td>Applicable - Configurable</td>
 <td>Verify the operating system synchronizes internal information system clocks to the authoritative time source when the time difference is greater than one second. If it does not, this is a finding.</td>
 <td>To verify that maxpoll has been set properly, perform the following:
 $ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf
-The output should return
+The output should return:
 maxpoll .
       Is it the case that it does not exist or maxpoll has not been set to the expected value?
       </td>
@@ -21960,10 +21982,12 @@ maxpoll .
  in /etc/ntp.conf or
 /etc/chrony.conf to continuously poll time servers. To configure
 maxpoll in /etc/ntp.conf or /etc/chrony.conf
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 maxpoll 
 to server directives. If using chrony any pool directives
-should be configured too.</td>
+should be configured too.
+If no server or pool directives are configured, the rule evaluates
+to pass.</td>
 <td>medium</td>
 <td></td>
 <td></td>
@@ -22080,15 +22104,17 @@ Time stamps generated by the operating system include date and time. Time is com
 <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub> in <code>/etc/ntp.conf</code> or
 <code>/etc/chrony.conf</code> to continuously poll time servers. To configure
 <code>maxpoll</code> in <code>/etc/ntp.conf</code> or <code>/etc/chrony.conf</code>
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 <pre>maxpoll <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub></pre>
 to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
-should be configured too.</td>
+should be configured too.
+If no <code>server</code> or <code>pool</code> directives are configured, the rule evaluates
+to pass.</td>
 <td>Applicable - Configurable</td>
 <td>Verify the operating system records time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT). If it does not, this is a finding.</td>
 <td>To verify that maxpoll has been set properly, perform the following:
 $ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf
-The output should return
+The output should return:
 maxpoll .
       Is it the case that it does not exist or maxpoll has not been set to the expected value?
       </td>
@@ -22097,10 +22123,12 @@ maxpoll .
  in /etc/ntp.conf or
 /etc/chrony.conf to continuously poll time servers. To configure
 maxpoll in /etc/ntp.conf or /etc/chrony.conf
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 maxpoll 
 to server directives. If using chrony any pool directives
-should be configured too.</td>
+should be configured too.
+If no server or pool directives are configured, the rule evaluates
+to pass.</td>
 <td>medium</td>
 <td></td>
 <td></td>
@@ -22645,7 +22673,7 @@ not exist within temporary directories like /dev/shm.
 Add the nodev option to the fourth column of
 /etc/fstab for the line which controls mounting of
 /dev/shm.</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -22685,7 +22713,7 @@ from world-writable temporary storage directories such as /dev/shm.
 Add the noexec option to the fourth column of
 /etc/fstab for the line which controls mounting of
 /dev/shm.</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -22723,7 +22751,7 @@ be required in these world-writable directories.
 Add the nosuid option to the fourth column of
 /etc/fstab for the line which controls mounting of
 /dev/shm.</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -22877,6 +22905,7 @@ when using the "sudo" command to elevate privileges, run the following command:
 sudo grep -ri '^Defaults.*timestamp_timeout' /etc/sudoers /etc/sudoers.d
 The output should be:
 /etc/sudoers:Defaults timestamp_timeout=0 or "timestamp_timeout" is set to a positive number.
+If results are returned from more than one file location, this is a finding.
       Is it the case that timestamp_timeout is not set with the appropriate value for sudo?
       </td>
 <td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3848r375177_fix">Configure the operating system to require users to re-authenticate for privilege escalation.</fixtext></td>
@@ -27480,7 +27509,7 @@ $ sudo systemctl enable sshd.service</td>
 <td>V-56733</td>
 <td>SRG-OS-000424-GPOS-00188</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a</td>
+<td>The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).</td>
 <td>CCE-27358-1:Deactivate Wireless Network Interfaces</td>
 <td>Encrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions which have common application in digital signatures, checksums, and message authentication codes. 
 
@@ -27496,7 +27525,9 @@ following command:
 <pre>$ sudo nmcli radio wifi off</pre>
 </td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system implements cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum</td>
+<td>Verify the operating system implements cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS). 
+
+If it does not, this is a finding.</td>
 <td>Verify that there are no wireless interfaces configured on the system
 with the following command:
 
@@ -27505,7 +27536,7 @@ The output should contain the following:
 wifi disconnected
       Is it the case that it is not?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3874r375312_fix">Configure the operating system to implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a mi</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3874r793158_fix">Configure the operating system to implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).</fixtext></td>
 <td>Deactivating wireless network interfaces should prevent
 normal usage of the wireless capability.
 
@@ -27522,7 +27553,7 @@ $ sudo nmcli radio wifi off</td>
 <td>V-56733</td>
 <td>SRG-OS-000424-GPOS-00188</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
-<td>The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a</td>
+<td>The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).</td>
 <td>CCE-80215-7:Install the OpenSSH Server Package</td>
 <td>Encrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions which have common application in digital signatures, checksums, and message authentication codes. 
 
@@ -27535,11 +27566,13 @@ The <code>openssh-server</code> package can be installed with the following comm
 $ sudo yum install openssh-server</pre>
 </td>
 <td>Applicable - Configurable</td>
-<td>Verify the operating system implements cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum</td>
+<td>Verify the operating system implements cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS). 
+
+If it does not, this is a finding.</td>
 <td>Run the following command to determine if the openssh-server package is installed: $ rpm -q openssh-server
       Is it the case that the package is not installed?
       </td>
-<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3874r375312_fix">Configure the operating system to implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a mi</fixtext></td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3874r793158_fix">Configure the operating system to implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).</fixtext></td>
 <td>The openssh-server package should be installed.
 The openssh-server package can be installed with the following command:
 
@@ -39689,9 +39722,11 @@ There must be a resolvable DNS CNAME or Alias record set to "" for logs to be se
 <td>CCE-27160-1:Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session</td>
 <td>If the operating system allows the user to select passwords based on dictionary words, then this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.</td>
 <td xml:lang="en-US">To configure the number of retry prompts that are permitted per-session:
+
 Edit the <code>pam_pwquality.so</code> statement in
 
-<code>/etc/pam.d/system-auth</code>  to show
+<code>/etc/pam.d/system-auth</code> to show
+
 
 <code>retry=<xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_password_pam_retry"></xccdf-1.1:sub></code>, or a lower value if site
 policy is more restrictive. The DoD requirement is a maximum of 3 prompts
@@ -39700,7 +39735,9 @@ per session.</td>
 <td>Verify the operating system prevents the use of dictionary words for passwords. If it does not, this is a finding.</td>
 <td>To check how many retry attempts are permitted on a per-session basis, run the following command:
 
-$ grep pam_pwquality /etc/pam.d/system-auth 
+
+$ grep pam_pwquality /etc/pam.d/system-auth
+
 
 The retry parameter will indicate how many attempts are permitted.
 The DoD required value is less than or equal to 3.
@@ -39709,9 +39746,11 @@ This would appear as retry=3, or a lower value.
       </td>
 <td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3903r375726_fix">Configure the operating system to prevent the use of dictionary words for passwords.</fixtext></td>
 <td>To configure the number of retry prompts that are permitted per-session:
+
 Edit the pam_pwquality.so statement in
 
-/etc/pam.d/system-auth  to show
+/etc/pam.d/system-auth to show
+
 
 retry=, or a lower value if site
 policy is more restrictive. The DoD requirement is a maximum of 3 prompts
@@ -40372,6 +40411,44 @@ ALL ALL=(ALL:ALL) ALL</td>
 <td>SRG-OS-000480-GPOS-00227</td>
 <td><i>TBD - Assigned by DISA after STIG release</i></td>
 <td>The operating system must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.</td>
+<td>CCE-86277-1:Ensure sudo only includes the default configuration directory</td>
+<td>Configuring the operating system to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.
+
+Configuration settings are the set of parameters that can be changed in hardware, software, or firmware components of the system that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the system, including the parameters required to satisfy other security control requirements. Security-related parameters include, for example: registry settings; account, file, directory permission settings; and settings for functions, ports, protocols, services, and remote connections.</td>
+<td xml:lang="en-US">Administrators can configure authorized <code>sudo</code> users via drop-in files, and it is possible to include
+other directories and configuration files from the file currently being parsed.
+
+Make sure that <code>/etc/sudoers</code> only includes drop-in configuration files from <code>/etc/sudoers.d</code>.
+The <code>/etc/sudoers</code> should contain only one <code>#includedir</code> directive pointing to
+<code>/etc/sudoers.d</code>, and no file in <code>/etc/sudoers.d/</code> should include other files or directories.
+Note that the '#' character doesn't denote a comment in the configuration file.</td>
+<td>Applicable - Configurable</td>
+<td>Verify the operating system is configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs. If it is not, this is a finding.</td>
+<td>To determine whether sudo command includes configuration files from the appropriate directory,
+run the following command:
+$ sudo grep -rP '^#include(dir)?' /etc/sudoers /etc/sudoers.d
+If only the line /etc/sudoers:#includedir /etc/sudoers.d is returned, then the drop-in include configuration is set correctly.
+Any other line returned is a finding.
+      Is it the case that the /etc/sudoers doesn't include /etc/sudores.d or includes other directories??
+      </td>
+<td><fixtext xmlns="http://checklists.nist.gov/xccdf/1.1" fixref="F-3905r375732_fix">Configure the operating system in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.</fixtext></td>
+<td>Administrators can configure authorized sudo users via drop-in files, and it is possible to include
+other directories and configuration files from the file currently being parsed.
+
+Make sure that /etc/sudoers only includes drop-in configuration files from /etc/sudoers.d.
+The /etc/sudoers should contain only one #includedir directive pointing to
+/etc/sudoers.d, and no file in /etc/sudoers.d/ should include other files or directories.
+Note that the '#' character doesn't denote a comment in the configuration file.</td>
+<td>medium</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SV-70851</td>
+<td>SRG-OS-000480-GPOS-00227</td>
+<td><i>TBD - Assigned by DISA after STIG release</i></td>
+<td>The operating system must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.</td>
 <td>CCE-83421-8:Ensure invoking users password for privilege escalation when using sudo</td>
 <td>Configuring the operating system to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.
 
@@ -40388,7 +40465,8 @@ The expected output for:
 <td>Verify the operating system is configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs. If it is not, this is a finding.</td>
 <td>Run the following command to Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation:
  sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'
-If no results are returned, this is a finding
+If no results are returned, this is a finding.
+If results are returned from more than one file location, this is a finding.
 If "Defaults !targetpw" is not defined, this is a finding.
 If "Defaults !rootpw" is not defined, this is a finding.
 If "Defaults !runaspw" is not defined, this is a finding.
@@ -40440,7 +40518,7 @@ can be manually downloaded from the Red Hat Network and installed using rpm.
 
 NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
 dictates.</td>
-<td>high</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>
@@ -41374,7 +41452,7 @@ For example:
 search example.com
 nameserver 192.168.0.1
 nameserver 192.168.0.2</td>
-<td>low</td>
+<td>medium</td>
 <td></td>
 <td></td>
 <td></td>

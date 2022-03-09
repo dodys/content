@@ -45,6 +45,7 @@ auditd_audispd_network_failure_action
 auditd_audispd_syslog_plugin_activated
 auditd_overflow_action
 avahi_disable_publishing
+chronyd_server_directive
 chronyd_specify_remote_server
 configure_bashrc_exec_tmux
 configure_ssh_crypto_policy
@@ -59,6 +60,7 @@ dir_permissions_binary_dirs
 dir_permissions_library_dirs
 disable_host_auth
 disable_prelink
+disallow_bypass_password_sudo
 display_login_attempts
 encrypt_partitions
 etc_system_fips_exists
@@ -119,6 +121,10 @@ gnome_gdm_disable_xdmcp
 grub2_enable_fips_mode
 grub2_enable_iommu_force
 grub2_ipv6_disable_argument
+grub2_mce_argument
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
+grub2_slab_nomerge_argument
 installed_OS_is_FIPS_certified
 iptables_sshd_disabled
 kerberos_disable_no_keytab
@@ -141,6 +147,7 @@ mount_option_var_log_nosuid
 mount_option_var_nodev
 mount_option_var_nosuid
 no_all_squash_exports
+no_empty_passwords_etc_shadow
 no_legacy_plus_entries_etc_group
 no_legacy_plus_entries_etc_passwd
 no_legacy_plus_entries_etc_shadow

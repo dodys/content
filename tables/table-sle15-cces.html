@@ -128,16 +128,26 @@ $ sudo zypper install aide</pre>
 <td>CCE-85787-0</td>
 <td>Build and Test AIDE Database</td>
 <td xml:lang="en-US">Run the following command to generate a new database:
-<pre>$ sudo /usr/sbin/aide --init</pre>
-By default, the database will be written to the file <code>/var/lib/aide/aide.db.new.gz</code>.
+
+<pre>$ sudo /usr/bin/aide --init</pre>
+
+By default, the database will be written to the file
+
+<code>/var/lib/aide/aide.db.new</code>.
+
 Storing the database, the configuration file <code>/etc/aide.conf</code>, and the binary
-<code>/usr/sbin/aide</code> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+
+<code>/usr/bin/aide</code>
+
+(or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
 The newly-generated database can be installed as follows:
 
-<pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+<pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
 
 To initiate a manual check, run the following command:
-<pre>$ sudo /usr/sbin/aide --check</pre>
+
+<pre>$ sudo /usr/bin/aide --check</pre>
+
 If this check produces any unexpected output, investigate.</td>
 </tr>
 <tr>
@@ -982,6 +992,14 @@ fi</pre>
 </td>
 </tr>
 <tr>
+<td>CCE-91156-0</td>
+<td>Disallow Configuration to Bypass Password Requirements for Privilege Escalation</td>
+<td xml:lang="en-US">Verify the operating system is not configured to bypass password requirements for privilege
+escalation. Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+<pre>$ sudo grep pam_succeed_if /etc/pam.d/sudo</pre>
+If any occurrences of "pam_succeed_if" is returned from the command, this is a finding.</td>
+</tr>
+<tr>
 <td>CCE-85560-1</td>
 <td>Ensure PAM Displays Last Logon/Access Notification</td>
 <td xml:lang="en-US">To configure the system to notify users of last logon/access
@@ -1155,9 +1173,11 @@ to require use of a special character in passwords.</td>
 <td></td>
 <td>Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session</td>
 <td xml:lang="en-US">To configure the number of retry prompts that are permitted per-session:
+
 Edit the <code>pam_pwquality.so</code> statement in
 
-<code>/etc/pam.d/system-auth</code>  to show
+<code>/etc/pam.d/system-auth</code> to show
+
 
 <code>retry=<xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_password_pam_retry"></xccdf-1.1:sub></code>, or a lower value if site
 policy is more restrictive. The DoD requirement is a maximum of 3 prompts
@@ -1654,6 +1674,21 @@ considered a risk, because it should not be possible to directly login into
 a container anyway.</td>
 </tr>
 <tr>
+<td>CCE-91155-2</td>
+<td>Ensure There Are No Accounts With Blank or Null Passwords</td>
+<td xml:lang="en-US">Check the "/etc/shadow" file for blank passwords with the
+following command:
+<pre>$ sudo awk -F: '!$2 {print $1}' /etc/shadow</pre>
+If the command returns any results, this is a finding.
+Configure all accounts on the system to have a password or lock
+the account with the following commands:
+Perform a password reset:
+<pre>$ sudo passwd [username]</pre>
+Lock an account:
+<pre>$ sudo passwd -l [username]</pre>
+</td>
+</tr>
+<tr>
 <td></td>
 <td>Ensure there are no legacy + NIS entries in /etc/group</td>
 <td xml:lang="en-US">The <code>+</code> character in <code>/etc/group</code> file marks a place where
@@ -1767,15 +1802,6 @@ ensure lines of this form do not appear in <code>/etc/securetty</code>:
 vc/2
 vc/3
 vc/4</pre>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>Enforce usage of pam_wheel for su authentication</td>
-<td xml:lang="en-US">To ensure that only users who are members of the <code>wheel</code> group can
-run commands with altered privileges through the <code>su</code> command, make
-sure that the following line exists in the file <code>/etc/pam.d/su</code>:
-<pre>auth             required        pam_wheel.so use_uid</pre>
 </td>
 </tr>
 <tr>
@@ -2062,9 +2088,8 @@ The <code>auditd</code> service can be enabled with the following command:
 <td>Enable Auditing for Processes Which Start Prior to the Audit Daemon</td>
 <td xml:lang="en-US">To ensure all processes can be audited, even those which start
 prior to the audit daemon, add the argument <code>audit=1</code> to the default
-GRUB 2 command line for the Linux operating system in
-
-<code>/boot/grub2/grubenv</code>, in the manner below:
+GRUB 2 command line for the Linux operating system.
+Configure the default Grub2 kernel command line to contain audit=1 as follows:
 <pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"</pre>
 </td>
 </tr>
@@ -2073,9 +2098,9 @@ GRUB 2 command line for the Linux operating system in
 <td>Extend Audit Backlog Limit for the Audit Daemon</td>
 <td xml:lang="en-US">To improve the kernel capacity to queue all log events, even those which occurred
 prior to the audit daemon, add the argument <code>audit_backlog_limit=8192</code> to the default
-GRUB 2 command line for the Linux operating system in
-<code>/etc/default/grub</code>, in the manner below:
-<pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 audit=1 audit_backlog_limit=8192"</pre>
+GRUB 2 command line for the Linux operating system.
+Configure the default Grub2 kernel command line to contain audit_backlog_limit=8192 as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit_backlog_limit=8192"</pre>
 </td>
 </tr>
 <tr>
@@ -4219,7 +4244,71 @@ The <code>apparmor</code> service can be enabled with the following command:
 <td></td>
 <td>IOMMU configuration directive</td>
 <td xml:lang="en-US">On x86 architecture supporting VT-d, the IOMMU manages the access control policy between the hardware devices and some
-    of the system critical units such as the memory.</td>
+    of the system critical units such as the memory.
+Configure the default Grub2 kernel command line to contain iommu=force as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) iommu=force"</pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>Force kernel panic on uncorrected MCEs</td>
+<td xml:lang="en-US">A Machine Check Exception is an error generated by the CPU itdetects an error
+in itself, memory or I/O devices.
+These errors may be corrected and generate a check log entry, if an error
+cannot be corrected the kernel may panic or SIGBUS.
+
+To force the kernel to panic on any uncorrected error reported by Machine Check
+set the MCE tolerance to zero by adding <code>mce=0</code>
+to the default GRUB 2 command line for the Linux operating system.
+Configure the default Grub2 kernel command line to contain mce=0 as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) mce=0"</pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>Ensure SMAP is not disabled during boot</td>
+<td xml:lang="en-US">The SMAP is used to prevent the supervisor mode from unintentionally reading/writing into
+memory pages in the user space, it is enabled by default since Linux kernel 3.7.
+But it could be disabled through kernel boot parameters.
+
+Ensure that Supervisor Mode Access Prevention (SMAP) is not disabled by
+the <code>nosmap</code> boot paramenter option.
+
+Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <code>/etc/default/grub</code>
+doesn't contain the argument <code>nosmap</code>.
+Run the following command to update command line for already installed kernels:
+<pre># grubby --update-kernel=ALL --remove-args="nosmap"</pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>Ensure SMEP is not disabled during boot</td>
+<td xml:lang="en-US">The SMEP is used to prevent the supervisor mode from executing user space code,
+it is enabled by default since Linux kernel 3.0. But it could be disabled through
+kernel boot parameters.
+
+Ensure that Supervisor Mode Execution Prevention (SMEP) is not disabled by
+the <code>nosmep</code> boot paramenter option.
+
+Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <code>/etc/default/grub</code>
+doesn't contain the argument <code>nosmep</code>.
+Run the following command to update command line for already installed kernels:
+<pre># grubby --update-kernel=ALL --remove-args="nosmep"</pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>Disable merging of slabs with similar size</td>
+<td xml:lang="en-US">The kernel may merge similar slabs together to reduce overhead and increase
+cache hotness of objects.
+Disabling merging of slabs keeps the slabs separate and reduces the risk of
+kernel heap overflows overwriting objects in merged caches.
+
+To disable merging of slabs in the Kernel add the argument <code>slab_nomerge=yes</code>
+to the default GRUB 2 command line for the Linux operating system.
+Configure the default Grub2 kernel command line to contain slab_nomerge=yes as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) slab_nomerge=yes"</pre>
+</td>
 </tr>
 <tr>
 <td>CCE-85849-8</td>
@@ -4644,10 +4733,9 @@ add or correct the following line in
 <td>Ensure IPv6 is disabled through kernel boot parameter</td>
 <td xml:lang="en-US">To disable IPv6 protocol support in the Linux kernel,
 add the argument <code>ipv6.disable=1</code> to the default
-GRUB2 command line for the Linux operating system in
-
-<code>/boot/grub2/grubenv</code>, in the manner below:
-<pre>sudo  grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
+GRUB2 command line for the Linux operating system.
+Configure the default Grub2 kernel command line to contain ipv6.disable=1 as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
 </td>
 </tr>
 <tr>
@@ -6722,10 +6810,12 @@ The <code>systemd_timesyncd</code> service can be enabled with the following com
 <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub> in <code>/etc/ntp.conf</code> or
 <code>/etc/chrony.conf</code> to continuously poll time servers. To configure
 <code>maxpoll</code> in <code>/etc/ntp.conf</code> or <code>/etc/chrony.conf</code>
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 <pre>maxpoll <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub></pre>
 to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
-should be configured too.</td>
+should be configured too.
+If no <code>server</code> or <code>pool</code> directives are configured, the rule evaluates
+to pass.</td>
 </tr>
 <tr>
 <td>CCE-85834-0</td>
@@ -6767,6 +6857,11 @@ To ensure that chronyd is running under chrony user account, Add or edit the
 <code>OPTIONS</code> variable in <code>/etc/sysconfig/chronyd</code> to include <code>-u chrony</code>:
 <pre>OPTIONS="-u chrony"</pre>
 This recommendation only applies if chrony is in use on the system.</td>
+</tr>
+<tr>
+<td></td>
+<td>Ensure Chrony is only configured with the server directive</td>
+<td xml:lang="en-US">Check that Chrony only has time sources configured with the <code>server</code> directive.</td>
 </tr>
 <tr>
 <td>CCE-85833-2</td>
@@ -7544,8 +7639,14 @@ To explicitly enable LastLog in SSH, add or correct the following line in
 <td xml:lang="en-US">The <code>RekeyLimit</code> parameter specifies how often
 the session key of the is renegotiated, both in terms of
 amount of data that may be transmitted and the time
-elapsed. To decrease the default limits, put line
-<code>RekeyLimit <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_rekey_limit_size"></xccdf-1.1:sub> <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_rekey_limit_time"></xccdf-1.1:sub></code> to file <code>/etc/ssh/sshd_config</code>.</td>
+elapsed.<br>
+To decrease the default limits, add or correct the following line in
+
+
+<code>/etc/ssh/sshd_config</code>:
+
+<pre>RekeyLimit <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_rekey_limit_size"></xccdf-1.1:sub> <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_rekey_limit_time"></xccdf-1.1:sub></pre>
+</td>
 </tr>
 <tr>
 <td>CCE-83281-6</td>

@@ -69,6 +69,7 @@ file_integrity_notification_enabled
 file_permissions_proxy_kubeconfig
 fips_mode_enabled
 idp_is_configured
+ingress_controller_certificate
 kubeadmin_removed
 kubelet_configure_tls_cert
 kubelet_configure_tls_key
@@ -84,6 +85,9 @@ ocp_no_ldap_insecure
 openshift_api_server_audit_log_path
 openshift_motd_exists
 rbac_debug_role_protects_pprof
+resource_requests_limits_in_daemonset
+resource_requests_limits_in_deployment
+resource_requests_limits_in_statefulset
 resource_requests_quota
 route_ip_whitelist
 routes_protected_by_tls

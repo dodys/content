@@ -272,6 +272,7 @@ chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
 chronyd_or_ntpd_specify_multiple_servers
 chronyd_or_ntpd_specify_remote_server
+chronyd_server_directive
 chronyd_specify_remote_server
 clean_components_post_updating
 configure_bashrc_exec_tmux
@@ -335,6 +336,7 @@ disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
 disable_host_auth
 disable_users_coredumps
+disallow_bypass_password_sudo
 display_login_attempts
 dnf-automatic_apply_updates
 dnf-automatic_security_updates_only
@@ -438,10 +440,14 @@ grub2_enable_iommu_force
 grub2_enable_selinux
 grub2_ipv6_disable_argument
 grub2_kernel_trust_cpu_rng
+grub2_mce_argument
 grub2_no_removeable_media
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
 grub2_page_poison_argument
 grub2_password
 grub2_pti_argument
+grub2_slab_nomerge_argument
 grub2_slub_debug_argument
 grub2_uefi_admin_username
 grub2_uefi_password
@@ -520,6 +526,7 @@ network_ipv6_static_address
 network_sniffer_disabled
 no_all_squash_exports
 no_direct_root_logins
+no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_host_based_files
 no_legacy_plus_entries_etc_group

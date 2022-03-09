@@ -37,6 +37,7 @@ avahi_disable_publishing
 banner_etc_motd
 bios_enable_execution_restrictions
 chronyd_run_as_chrony_user
+chronyd_server_directive
 configure_etc_hosts_deny
 configure_user_data_backups
 coredump_disable_backtraces
@@ -124,6 +125,10 @@ group_unique_name
 grub2_audit_backlog_limit_argument
 grub2_enable_iommu_force
 grub2_ipv6_disable_argument
+grub2_mce_argument
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
+grub2_slab_nomerge_argument
 harden_ssh_client_crypto_policy
 harden_sshd_crypto_policy
 install_PAE_kernel_on_x86-32
@@ -294,6 +299,5 @@ sysctl_net_ipv6_conf_all_accept_ra
 sysctl_net_ipv6_conf_all_disable_ipv6
 sysctl_net_ipv6_conf_default_accept_ra
 sysctl_net_ipv6_conf_default_disable_ipv6
-use_pam_wheel_for_su
 xwindows_remove_packages
 xwindows_runlevel_target

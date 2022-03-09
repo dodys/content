@@ -17,10 +17,10 @@
 </tr></thead>
 <tbody><tr>
 <td>221</td>
-<td>6</td>
-<td>215</td>
-<td>97.29%</td>
-<td>SLES-12-010599SLES-12-010611SLES-12-010879SLES-12-010881SLES-12-030365SLES-12-030611</td>
+<td>13</td>
+<td>208</td>
+<td>94.12%</td>
+<td>SLES-12-010599SLES-12-010611SLES-12-010879SLES-12-010881SLES-12-020470SLES-12-020480SLES-12-020500SLES-12-020510SLES-12-020520SLES-12-020530SLES-12-020540SLES-12-030365SLES-12-030611</td>
 </tr></tbody>
 </table></div>
 <style type="text/css">
@@ -535,7 +535,8 @@ Restrict privileged actions by removing the following entries from the sudoers f
 the invoking user for the "root" user password.</td>
 <td>Run the following command to Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation:
  sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'
-If no results are returned, this is a finding
+If no results are returned, this is a finding.
+If results are returned from more than one file location, this is a finding.
 If "Defaults !targetpw" is not defined, this is a finding.
 If "Defaults !rootpw" is not defined, this is a finding.
 If "Defaults !runaspw" is not defined, this is a finding.
@@ -567,6 +568,7 @@ when using the "sudo" command to elevate privileges, run the following command:
 sudo grep -ri '^Defaults.*timestamp_timeout' /etc/sudoers /etc/sudoers.d
 The output should be:
 /etc/sudoers:Defaults timestamp_timeout=0 or "timestamp_timeout" is set to a positive number.
+If results are returned from more than one file location, this is a finding.
       Is it the case that timestamp_timeout is not set with the appropriate value for sudo?
       </td>
 <td>The sudo <code>timestamp_timeout</code> tag sets the amount of time sudo password prompt waits.
@@ -4405,74 +4407,6 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</td>
 <td>To determine if the system is configured to audit calls to the
-chmod system call, run the following command:
-$ sudo grep "chmod" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect file permission
-changes for all users and root. If the <code>auditd</code> daemon is configured to
-use the <code>augenrules</code> program to read audit rules during daemon startup
-(the default), add the following line to a file with suffix <code>.rules</code> in
-the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following line to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-</td>
-<td>SLES-12-020460</td>
-<td>audit_rules_dac_modification_chmod</td>
-</tr>
-<tr>
-<td>V-217228</td>
-<td>2884</td>
-<td>medium</td>
-<td>The SUSE operating system must generate audit records for all uses of the fchmod command.</td>
-<td>The changing of file permissions could indicate that a user is attempting to
-gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse among both authorized and
-unauthorized users.</td>
-<td>To determine if the system is configured to audit calls to the
-fchmod system call, run the following command:
-$ sudo grep "fchmod" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect file permission
-changes for all users and root. If the <code>auditd</code> daemon is configured to
-use the <code>augenrules</code> program to read audit rules during daemon startup
-(the default), add the following line to a file with suffix <code>.rules</code> in
-the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following line to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
-</td>
-<td>SLES-12-020470</td>
-<td>audit_rules_dac_modification_fchmod</td>
-</tr>
-<tr>
-<td>V-217229</td>
-<td>2884</td>
-<td>medium</td>
-<td>The SUSE operating system must generate audit records for all uses of the fchmodat command.</td>
-<td>The changing of file permissions could indicate that a user is attempting to
-gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse among both authorized and
-unauthorized users.</td>
-<td>To determine if the system is configured to audit calls to the
 fchmodat system call, run the following command:
 $ sudo grep "fchmodat" /etc/audit/audit.*
 If the system is configured to audit this activity, it will return a line.
@@ -4494,55 +4428,36 @@ utility to read audit rules during daemon startup, add the following line to
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=unset -F key=perm_mod</pre>
 </td>
-<td>SLES-12-020480</td>
+<td>SLES-12-020460</td>
 <td>audit_rules_dac_modification_fchmodat</td>
+</tr>
+<tr>
+<td>V-217228</td>
+<td></td>
+<td>medium</td>
+<td>The SUSE operating system must generate audit records for all uses of the fchmod command.</td>
+<td></td>
+<td></td>
+<td></td>
+<td>SLES-12-020470</td>
+<td>Missing Rule</td>
+</tr>
+<tr>
+<td>V-217229</td>
+<td></td>
+<td>medium</td>
+<td>The SUSE operating system must generate audit records for all uses of the fchmodat command.</td>
+<td></td>
+<td></td>
+<td></td>
+<td>SLES-12-020480</td>
+<td>Missing Rule</td>
 </tr>
 <tr>
 <td>V-217230</td>
 <td>2884</td>
 <td>medium</td>
 <td>The SUSE operating system must generate audit records for all uses of the open command.</td>
-<td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</td>
-<td>To determine if the system is configured to audit calls to the
-open system call, run the following command:
-$ sudo grep "open" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect unauthorized file
-accesses for all users and root. If the <code>auditd</code> daemon is configured
-to use the <code>augenrules</code> program to read audit rules during daemon
-startup (the default), add the following lines to a file with suffix
-<code>.rules</code> in the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following lines to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-</td>
-<td>SLES-12-020490</td>
-<td>audit_rules_unsuccessful_file_modification_open</td>
-</tr>
-<tr>
-<td>V-217231</td>
-<td>172</td>
-<td>medium</td>
-<td>The SUSE operating system must generate audit records for all uses of the truncate command.</td>
 <td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</td>
 <td>To determine if the system is configured to audit calls to the
@@ -4576,166 +4491,63 @@ If the system is 64 bit then also add the following lines:
 -a always,exit -F arch=b64 -S truncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
 -a always,exit -F arch=b64 -S truncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
 </td>
-<td>SLES-12-020500</td>
+<td>SLES-12-020490</td>
 <td>audit_rules_unsuccessful_file_modification_truncate</td>
 </tr>
 <tr>
+<td>V-217231</td>
+<td></td>
+<td>medium</td>
+<td>The SUSE operating system must generate audit records for all uses of the truncate command.</td>
+<td></td>
+<td></td>
+<td></td>
+<td>SLES-12-020500</td>
+<td>Missing Rule</td>
+</tr>
+<tr>
 <td>V-217232</td>
-<td>2884</td>
+<td></td>
 <td>medium</td>
 <td>The SUSE operating system must generate audit records for all uses of the ftruncate command.</td>
-<td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</td>
-<td>To determine if the system is configured to audit calls to the
-ftruncate system call, run the following command:
-$ sudo grep "ftruncate" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect unauthorized file
-accesses for all users and root. If the <code>auditd</code> daemon is configured
-to use the <code>augenrules</code> program to read audit rules during daemon
-startup (the default), add the following lines to a file with suffix
-<code>.rules</code> in the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S ftruncate -F exiu=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following lines to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-</td>
+<td></td>
+<td></td>
+<td></td>
 <td>SLES-12-020510</td>
-<td>audit_rules_unsuccessful_file_modification_ftruncate</td>
+<td>Missing Rule</td>
 </tr>
 <tr>
 <td>V-217233</td>
-<td>2884</td>
+<td></td>
 <td>medium</td>
 <td>The SUSE operating system must generate audit records for all uses of the creat command.</td>
-<td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</td>
-<td>To determine if the system is configured to audit calls to the
-creat system call, run the following command:
-$ sudo grep "creat" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect unauthorized file
-accesses for all users and root. If the <code>auditd</code> daemon is configured
-to use the <code>augenrules</code> program to read audit rules during daemon
-startup (the default), add the following lines to a file with suffix
-<code>.rules</code> in the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following lines to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-</td>
+<td></td>
+<td></td>
+<td></td>
 <td>SLES-12-020520</td>
-<td>audit_rules_unsuccessful_file_modification_creat</td>
+<td>Missing Rule</td>
 </tr>
 <tr>
 <td>V-217234</td>
-<td>2884</td>
+<td></td>
 <td>medium</td>
 <td>The SUSE operating system must generate audit records for all uses of the openat command.</td>
-<td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</td>
-<td>To determine if the system is configured to audit calls to the
-openat system call, run the following command:
-$ sudo grep "openat" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect unauthorized file
-accesses for all users and root. If the <code>auditd</code> daemon is configured
-to use the <code>augenrules</code> program to read audit rules during daemon
-startup (the default), add the following lines to a file with suffix
-<code>.rules</code> in the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following lines to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-</td>
+<td></td>
+<td></td>
+<td></td>
 <td>SLES-12-020530</td>
-<td>audit_rules_unsuccessful_file_modification_openat</td>
+<td>Missing Rule</td>
 </tr>
 <tr>
 <td>V-217235</td>
-<td>2884</td>
+<td></td>
 <td>medium</td>
 <td>The SUSE operating system must generate audit records for all uses of the open_by_handle_at command.</td>
-<td>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</td>
-<td>To determine if the system is configured to audit calls to the
-open_by_handle_at system call, run the following command:
-$ sudo grep "open_by_handle_at" /etc/audit/audit.*
-If the system is configured to audit this activity, it will return a line.
-
-      Is it the case that no line is returned?
-      </td>
-<td>At a minimum, the audit system should collect unauthorized file
-accesses for all users and root. If the <code>auditd</code> daemon is configured
-to use the <code>augenrules</code> program to read audit rules during daemon
-startup (the default), add the following lines to a file with suffix
-<code>.rules</code> in the directory <code>/etc/audit/rules.d</code>:
-<pre>-a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the <code>auditd</code> daemon is configured to use the <code>auditctl</code>
-utility to read audit rules during daemon startup, add the following lines to
-<code>/etc/audit/audit.rules</code> file:
-<pre>-a always,exit -F arch=b32 -S open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b32 -S open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=access
--a always,exit -F arch=b64 -S open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=access</pre>
-</td>
+<td></td>
+<td></td>
+<td></td>
 <td>SLES-12-020540</td>
-<td>audit_rules_unsuccessful_file_modification_open_by_handle_at</td>
+<td>Missing Rule</td>
 </tr>
 <tr>
 <td>V-217236</td>
@@ -6249,7 +6061,7 @@ forensic analysis and investigating system events. Sources outside the
 configured acceptable allowance (drift) may be inaccurate.</td>
 <td>To verify that maxpoll has been set properly, perform the following:
 $ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf
-The output should return
+The output should return:
 maxpoll .
       Is it the case that it does not exist or maxpoll has not been set to the expected value?
       </td>
@@ -6257,10 +6069,12 @@ maxpoll .
 <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub> in <code>/etc/ntp.conf</code> or
 <code>/etc/chrony.conf</code> to continuously poll time servers. To configure
 <code>maxpoll</code> in <code>/etc/ntp.conf</code> or <code>/etc/chrony.conf</code>
-add the following:
+add the following after each `server`, `pool` or `peer` entry:
 <pre>maxpoll <xccdf-1.1:sub xmlns:xccdf-1.1="http://checklists.nist.gov/xccdf/1.1" idref="var_time_service_set_maxpoll"></xccdf-1.1:sub></pre>
 to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
-should be configured too.</td>
+should be configured too.
+If no <code>server</code> or <code>pool</code> directives are configured, the rule evaluates
+to pass.</td>
 <td>SLES-12-030300</td>
 <td>chronyd_or_ntpd_set_maxpoll</td>
 </tr>

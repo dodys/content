@@ -18,6 +18,8 @@ accounts_password_pam_minlen
 accounts_password_pam_ocredit
 accounts_password_pam_pwhistory_remember_password_auth
 accounts_password_pam_pwhistory_remember_system_auth
+accounts_password_pam_pwquality_password_auth
+accounts_password_pam_pwquality_system_auth
 accounts_password_pam_retry
 accounts_password_pam_ucredit
 accounts_password_pam_unix_remember
@@ -390,8 +392,13 @@ grub2_enable_selinux
 grub2_init_on_alloc_argument
 grub2_ipv6_disable_argument
 grub2_kernel_trust_cpu_rng
+grub2_mce_argument
+grub2_nosmap_argument_absent
+grub2_nosmep_argument_absent
+grub2_page_alloc_shuffle_argument
 grub2_page_poison_argument
 grub2_pti_argument
+grub2_slab_nomerge_argument
 grub2_slub_debug_argument
 grub2_vsyscall_argument
 harden_ssh_client_crypto_policy
@@ -437,6 +444,7 @@ mount_option_noexec_removable_partitions
 mount_option_nosuid_remote_filesystems
 mount_option_nosuid_removable_partitions
 mount_option_opt_nosuid
+mount_option_proc_hidepid
 mount_option_srv_nosuid
 mount_option_tmp_nodev
 mount_option_tmp_noexec
@@ -457,6 +465,7 @@ mount_option_var_tmp_nosuid
 network_nmcli_permissions
 no_direct_root_logins
 no_empty_passwords
+no_empty_passwords_etc_shadow
 no_host_based_files
 no_legacy_plus_entries_etc_group
 no_legacy_plus_entries_etc_passwd
@@ -504,6 +513,7 @@ package_openscap-scanner_installed
 package_openssh-clients_installed
 package_openssh-server_installed
 package_openssh-server_removed
+package_pam_pwquality_installed
 package_pcsc-lite_installed
 package_policycoreutils-python-utils_installed
 package_policycoreutils_installed
@@ -964,6 +974,7 @@ sudo_remove_no_authenticate
 sudo_remove_nopasswd
 sudo_require_authentication
 sudo_require_reauthentication
+sudoers_default_includedir
 sudoers_validate_passwd
 sysctl_fs_protected_hardlinks
 sysctl_fs_protected_symlinks
@@ -1039,6 +1050,7 @@ zipl_audit_argument
 zipl_audit_backlog_limit_argument
 zipl_bootmap_is_up_to_date
 zipl_init_on_alloc_argument
+zipl_page_alloc_shuffle_argument
 zipl_page_poison_argument
 zipl_slub_debug_argument
 zipl_vsyscall_argument
