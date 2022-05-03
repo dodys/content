@@ -45,6 +45,7 @@ audit_profile_set
 azure_disk_encryption_enabled
 banner_or_login_template_set
 classification_banner
+cluster_logging_operator_exist
 cluster_version_operator_exists
 cluster_version_operator_verify_integrity
 cluster_wide_proxy_set
@@ -98,7 +99,6 @@ file_groupowner_ovs_pid
 file_groupowner_ovs_sys_id_conf
 file_groupowner_ovs_vswitchd_pid
 file_groupowner_ovsdb_server_pid
-file_groupowner_proxy_kubeconfig
 file_groupowner_scheduler_kubeconfig
 file_groupowner_worker_ca
 file_groupowner_worker_kubeconfig
@@ -129,7 +129,6 @@ file_owner_ovs_pid
 file_owner_ovs_sys_id_conf
 file_owner_ovs_vswitchd_pid
 file_owner_ovsdb_server_pid
-file_owner_proxy_kubeconfig
 file_owner_scheduler_kubeconfig
 file_owner_var_lib_etcd
 file_owner_worker_ca

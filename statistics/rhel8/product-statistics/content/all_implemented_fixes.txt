@@ -238,7 +238,6 @@ clean_components_post_updating
 configure_bashrc_exec_tmux
 configure_bind_crypto_policy
 configure_crypto_policy
-configure_firewalld_ports
 configure_gnutls_tls_crypto_policy
 configure_kerberos_crypto_policy
 configure_libreswan_crypto_policy
@@ -305,6 +304,9 @@ ensure_gpgcheck_never_disabled
 ensure_logrotate_activated
 ensure_redhat_gpgkey_installed
 file_at_deny_not_exist
+file_audit_tools_group_ownership
+file_audit_tools_ownership
+file_audit_tools_permissions
 file_cron_deny_not_exist
 file_group_ownership_var_log_audit
 file_groupowner_at_allow
@@ -544,6 +546,8 @@ package_iptables_installed
 package_krb5-server_removed
 package_krb5-workstation_removed
 package_libcap-ng-utils_installed
+package_libreport-plugin-logger_removed
+package_libreport-plugin-rhtsupport_removed
 package_libreswan_installed
 package_libselinux_installed
 package_mcstrans_removed

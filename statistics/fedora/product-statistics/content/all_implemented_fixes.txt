@@ -177,6 +177,7 @@ chronyd_or_ntpd_specify_multiple_servers
 chronyd_or_ntpd_specify_remote_server
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
+clean_components_post_updating
 configure_bashrc_exec_tmux
 configure_bind_crypto_policy
 configure_crypto_policy
@@ -421,6 +422,8 @@ package_iprutils_removed
 package_iptables_installed
 package_krb5-workstation_removed
 package_libcap-ng-utils_installed
+package_libreport-plugin-logger_removed
+package_libreport-plugin-rhtsupport_removed
 package_libreswan_installed
 package_libselinux_installed
 package_mcstrans_removed

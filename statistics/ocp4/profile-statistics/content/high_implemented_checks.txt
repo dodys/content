@@ -43,6 +43,7 @@ audit_log_forwarding_enabled
 audit_log_forwarding_uses_tls
 audit_profile_set
 banner_or_login_template_set
+cluster_logging_operator_exist
 cluster_version_operator_exists
 cluster_version_operator_verify_integrity
 cluster_wide_proxy_set
@@ -64,10 +65,8 @@ etcd_peer_auto_tls
 etcd_peer_cert_file
 etcd_peer_client_cert_auth
 etcd_peer_key_file
-file_groupowner_proxy_kubeconfig
 file_integrity_exists
 file_integrity_notification_enabled
-file_owner_proxy_kubeconfig
 file_permissions_proxy_kubeconfig
 fips_mode_enabled
 idp_is_configured

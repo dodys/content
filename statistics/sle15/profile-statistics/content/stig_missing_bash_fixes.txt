@@ -8,7 +8,6 @@ auditd_audispd_disk_full_action
 auditd_audispd_network_failure_action
 dir_perms_world_writable_system_owned_group
 encrypt_partitions
-file_etc_security_opasswd
 file_permission_user_init_files
 file_permissions_ungroupowned
 grub2_password
@@ -23,5 +22,4 @@ partition_for_var
 partition_for_var_log_audit
 permissions_local_var_log_audit
 set_password_hashing_min_rounds_logindefs
-smartcard_pam_enabled
 sudo_restrict_privilege_elevation_to_authorized

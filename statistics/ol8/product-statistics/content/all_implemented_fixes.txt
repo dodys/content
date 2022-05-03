@@ -232,7 +232,6 @@ clean_components_post_updating
 configure_bashrc_exec_tmux
 configure_bind_crypto_policy
 configure_crypto_policy
-configure_firewalld_ports
 configure_gnutls_tls_crypto_policy
 configure_kerberos_crypto_policy
 configure_libreswan_crypto_policy
@@ -486,6 +485,8 @@ package_iptables_installed
 package_krb5-server_removed
 package_krb5-workstation_removed
 package_libcap-ng-utils_installed
+package_libreport-plugin-logger_removed
+package_libreport-plugin-rhtsupport_removed
 package_libreswan_installed
 package_libselinux_installed
 package_net-snmp_removed
@@ -760,6 +761,7 @@ usbguard_allow_hub
 usbguard_generate_policy
 use_kerberos_security_all_exports
 use_pam_wheel_for_su
+vlock_installed
 wireless_disable_interfaces
 xwindows_remove_packages
 xwindows_runlevel_target

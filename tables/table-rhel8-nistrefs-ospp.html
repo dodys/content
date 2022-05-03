@@ -687,12 +687,17 @@ system, interactive boot can be enabled by providing a <tt>1</tt>,
 <tt>yes</tt>, <tt>true</tt>, or <tt>on</tt> value to the
 <tt>systemd.confirm_spawn</tt> kernel argument in <tt>/etc/default/grub</tt>.
 Remove any instance of <pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from
-the kernel arguments in that file to disable interactive boot. It is also
-required to change the runtime configuration, run:
+the kernel arguments in that file to disable interactive boot.
+Recovery booting must also be disabled. Confirm that
+<tt>GRUB_DISABLE_RECOVERY=true</tt> is set in  <tt>/etc/default/grub</tt>.
+It is also required to change the runtime configuration, run:
+
 <pre>/sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"</pre>
+
+<pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
   </td>
   <td xml:lang="en-US">
-Using interactive boot, the console user could disable auditing, firewalls,
+Using interactive or recovery boot, the console user could disable auditing, firewalls,
 or other services, weakening system security.
   </td>
   <td></td>
@@ -844,6 +849,31 @@ privileges.
   <td>var_selinux_state=enforcing</td>
 </tr>
 <tr>
+  <td>CM-3(6)<br/>SC-12(2)<br/>SC-12(3)<br/>IA-7<br/>SC-13<br/>CM-6(a)<br/>SC-12</td>
+  <td>CCE-80942-6</td>
+  <td>Enable FIPS Mode</td>
+  <td xml:lang="en-US">
+To enable FIPS mode, run the following command:
+<pre>fips-mode-setup --enable</pre>
+<br />
+The <tt>fips-mode-setup</tt> command will configure the system in
+FIPS mode by automatically configuring the following:
+<ul>
+<li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
+<li>Creating <tt>/etc/system-fips</tt></li>
+<li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt><tt>fips_ospp</tt></tt></li>
+<li>Loading the Dracut <tt>fips</tt> module</li>
+</ul>
+  </td>
+  <td xml:lang="en-US">
+Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+protect data. The operating system must implement cryptographic modules adhering to the higher
+standards approved by the federal government since this provides assurance they have been tested
+and validated.
+  </td>
+  <td>var_system_crypto_policy=fips_ospp</td>
+</tr>
+<tr>
   <td>AC-4<br/>CM-7(b)<br/>CA-3(5)<br/>SC-7(21)<br/>CM-6(a)</td>
   <td>CCE-80877-4</td>
   <td>Verify firewalld Enabled</td>
@@ -856,25 +886,6 @@ The <code>firewalld</code> service can be enabled with the following command:
 Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td>AU-4(1)<br/>CM-6(a)</td>
-  <td>CCE-80677-8</td>
-  <td>Configure auditd to use audispd's syslog plugin</td>
-  <td xml:lang="en-US">
-To configure the <tt>auditd</tt> service to use the
-<tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
-the <tt>active</tt> line in <tt>/etc/audit/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
-Restart the <tt>auditd</tt> service:
-<pre>$ sudo service auditd restart</pre>
-  </td>
-  <td xml:lang="en-US">
-The auditd service does not include the ability to send audit
-records to a centralized server for management directly. It does, however,
-include a plug-in for audit event multiplexor (audispd) to pass audit records
-to the local syslog server
   </td>
   <td></td>
 </tr>
@@ -1073,7 +1084,7 @@ attacks.
 <br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of
-possble combinations that need to be tested before the password is compromised.
+possible combinations that need to be tested before the password is compromised.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
   </td>
@@ -1516,7 +1527,7 @@ To improve the kernel capacity to queue all log events, even those which occurre
 prior to the audit daemon, add the argument <tt>audit_backlog_limit=8192</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>audit_backlog_limit=8192</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>audit_backlog_limit=8192</tt> to the
+argument to newly installed kernels, add <tt>audit_backlog_limit=8192</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... audit_backlog_limit=8192 ..."</pre>
@@ -1539,7 +1550,7 @@ To enable poisoning of free pages,
 add the argument <tt>page_poison=1</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>page_poison=1</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>page_poison=1</tt> to the
+argument to newly installed kernels, add <tt>page_poison=1</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... page_poison=1 ..."</pre>
@@ -1563,7 +1574,7 @@ To enable poisoning of SLUB/SLAB objects,
 add the argument <tt>slub_debug=P</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>slub_debug=P</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>slub_debug=P</tt> to the
+argument to newly installed kernels, add <tt>slub_debug=P</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... slub_debug=P ..."</pre>
@@ -2096,7 +2107,7 @@ To disable use of virtual syscalls,
 add the argument <tt>vsyscall=none</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>vsyscall=none</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>vsyscall=none</tt> to the
+argument to newly installed kernels, add <tt>vsyscall=none</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... vsyscall=none ..."</pre>
@@ -2115,7 +2126,7 @@ of the return instruction pointer.
   <td xml:lang="en-US">
 
 To configure the system to prevent the <code>cramfs</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/cramfs.conf</code>:
 <pre>install cramfs /bin/true</pre>
 This effectively prevents usage of this uncommon filesystem.
 
@@ -2141,7 +2152,7 @@ message-oriented communication, with several streams of messages
 within one connection.
 
 To configure the system to prevent the <code>sctp</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/sctp.conf</code>:
 <pre>install sctp /bin/true</pre>
   </td>
   <td xml:lang="en-US">
@@ -2160,7 +2171,7 @@ is designed to provide communications between nodes in a
 cluster.
 
 To configure the system to prevent the <code>tipc</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/tipc.conf</code>:
 <pre>install tipc /bin/true</pre>
   </td>
   <td xml:lang="en-US">
@@ -2824,7 +2835,7 @@ the network.
 <tr>
   <td>CM-7(a)<br/>CM-7(b)<br/>SC-5(1)<br/>SC-5(2)<br/>SC-5(3)(a)<br/>CM-6(a)</td>
   <td>CCE-80923-6</td>
-  <td>Enable Kernel Parameter to Use TCP Syncookies on IPv4 Interfaces</td>
+  <td>Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces</td>
   <td xml:lang="en-US">
 To set the runtime status of the <code>net.ipv4.tcp_syncookies</code> kernel parameter, run the following command: <pre>$ sudo sysctl -w net.ipv4.tcp_syncookies=1</pre>
 To make sure that the setting is persistent, add the following line to a file in the directory <tt>/etc/sysctl.d</tt>: <pre>net.ipv4.tcp_syncookies = 1</pre>
@@ -3018,7 +3029,7 @@ not provide easy attribution.
   <td></td>
 </tr>
 <tr>
-  <td>AU-8(1)</td>
+  <td>AU-8(1)<br/>AU-12(1)</td>
   <td>CCE-82988-7</td>
   <td>Disable chrony daemon from acting as server</td>
   <td xml:lang="en-US">
@@ -3080,26 +3091,6 @@ to <tt>/etc/usbguard/rules.conf</tt>.
 Without allowing Human Interface Devices, it might not be possible
 to interact with the system. Without allowing hubs, it might not be possible to use any
 USB devices on the system.
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td>AU-9(3)<br/>CM-6(a)</td>
-  <td>CCE-82457-3</td>
-  <td>Configure TLS for rsyslog remote logging</td>
-  <td xml:lang="en-US">
-Configure <tt>rsyslog</tt> to use Transport Layer
-Security (TLS) support for logging to remote server
-for the Forwarding Output Module in <tt>/etc/rsyslog.conf</tt>
-using action. You can use the following command:
-<pre>echo 'action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
-    StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")' >> /etc/rsyslog.conf
-</pre>
-Replace the <tt>&lt;remote system></tt> in the above command with an IP address or a host name of the remote logging server.
-  </td>
-  <td xml:lang="en-US">
-For protection of data being logged, the connection to the
-remote logging server needs to be authenticated and encrypted.
   </td>
   <td></td>
 </tr>
@@ -3213,31 +3204,6 @@ and validated.
   <td></td>
 </tr>
 <tr>
-  <td>SC-12(2)<br/>SC-12(3)<br/>IA-7<br/>SC-13<br/>CM-6(a)<br/>SC-12</td>
-  <td>CCE-80942-6</td>
-  <td>Enable FIPS Mode</td>
-  <td xml:lang="en-US">
-To enable FIPS mode, run the following command:
-<pre>fips-mode-setup --enable</pre>
-<br />
-The <tt>fips-mode-setup</tt> command will configure the system in
-FIPS mode by automatically configuring the following:
-<ul>
-<li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
-<li>Creating <tt>/etc/system-fips</tt></li>
-<li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt><tt>fips_ospp</tt></tt></li>
-<li>Loading the Dracut <tt>fips</tt> module</li>
-</ul>
-  </td>
-  <td xml:lang="en-US">
-Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
-protect data. The operating system must implement cryptographic modules adhering to the higher
-standards approved by the federal government since this provides assurance they have been tested
-and validated.
-  </td>
-  <td>var_system_crypto_policy=fips_ospp</td>
-</tr>
-<tr>
   <td>SC-13<br/>SC-12(2)<br/>SC-12(3)</td>
   <td>CCE-80934-3</td>
   <td>Configure BIND to use System Crypto Policy</td>
@@ -3268,7 +3234,7 @@ Kerberos is supported by crypto policy, but it's configuration may be
 set up to ignore it.
 To check that Crypto Policies settings for Kerberos are configured correctly, examine that there is a symlink at
 /etc/krb5.conf.d/crypto-policies targeting /etc/cypto-policies/back-ends/krb5.config.
-If the symlink exists, kerberos is configured to use the system-wide crypto policy settings.
+If the symlink exists, Kerberos is configured to use the system-wide crypto policy settings.
   </td>
   <td xml:lang="en-US">
 Overriding the system crypto policy makes the behavior of Kerberos violate expectations,
@@ -3285,7 +3251,7 @@ To enable Kernel page-table isolation,
 add the argument <tt>pti=on</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>pti=on</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>pti=on</tt> to the
+argument to newly installed kernels, add <tt>pti=on</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... pti=on ..."</pre>
@@ -3416,7 +3382,7 @@ To ensure all processes can be audited, even those which start
 prior to the audit daemon, add the argument <tt>audit=1</tt> to the default
 GRUB 2 command line for the Linux operating system.
 To ensure that <tt>audit=1</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>audit=1</tt> to the
+argument to newly installed kernels, add <tt>audit=1</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... audit=1 ..."</pre>
@@ -3440,7 +3406,7 @@ network, data link, and physical layers, based on virtual circuits
 and virtual paths.
 
 To configure the system to prevent the <code>atm</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/atm.conf</code>:
 <pre>install atm /bin/true</pre>
   </td>
   <td xml:lang="en-US">
@@ -3477,7 +3443,7 @@ protocol which was initially developed for automotive and
 is now also used in marine, industrial, and medical applications.
 
 To configure the system to prevent the <code>can</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/can.conf</code>:
 <pre>install can /bin/true</pre>
   </td>
   <td xml:lang="en-US">
@@ -3495,7 +3461,7 @@ The IEEE 1394 (FireWire) is a serial bus standard for
 high-speed real-time communication.
 
 To configure the system to prevent the <code>firewire-core</code>
-kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/firewire-core.conf</code>:
 <pre>install firewire-core /bin/true</pre>
   </td>
   <td xml:lang="en-US">
@@ -3513,11 +3479,11 @@ To set the runtime status of the <code>kernel.kptr_restrict</code> kernel parame
 To make sure that the setting is persistent, add the following line to a file in the directory <tt>/etc/sysctl.d</tt>: <pre>kernel.kptr_restrict = <tt>1</tt></pre>
   </td>
   <td xml:lang="en-US">
-Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes
-kernel writeable structures that can contain functions pointers. If a write vulnereability occurs
-in the kernel allowing a write access to any of this structure, the kernel can be compromise. This
-option disallow any program withtout the CAP_SYSLOG capability from getting the kernel pointers addresses,
-replacing them with 0.
+Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes kernel
+writeable structures which may contain functions pointers. If a write vulnerability
+occurs in the kernel, allowing write access to any of this structure, the kernel can
+be compromised. This option disallow any program without the CAP_SYSLOG capability
+to get the addresses of kernel pointers by replacing them with 0.
   </td>
   <td>sysctl_kernel_kptr_restrict_value=1</td>
 </tr>
@@ -3589,7 +3555,7 @@ There must not exist the boot parameter <tt>random.trust_cpu=off</tt>. If
 the option is not compiled in, make sure that <tt>random.trust_cpu=on</tt>
 is configured as a boot parameter.
 To ensure that <tt>random.trust_cpu=on</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>random.trust_cpu=on</tt> to the
+argument to newly installed kernels, add <tt>random.trust_cpu=on</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... random.trust_cpu=on ..."</pre>
@@ -3822,22 +3788,6 @@ information from within a process's address space or registers.
 </tr>
 <tr>
   <td></td>
-  <td>CCE-82953-1</td>
-  <td>Install audispd-plugins Package</td>
-  <td xml:lang="en-US">
-The <code>audispd-plugins</code> package can be installed with the following command:
-<pre>
-$ sudo yum install audispd-plugins</pre>
-  </td>
-  <td xml:lang="en-US">
-<tt>audispd-plugins</tt> provides plugins for the real-time interface to the
-audit subsystem, <tt>audispd</tt>. These plugins can do things like relay events
-to remote machines or analyze events for suspicious behavior.
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td></td>
   <td>CCE-82874-9</td>
   <td>The Chrony package is installed</td>
   <td xml:lang="en-US">
@@ -3971,6 +3921,36 @@ nor is it permitted in many regulatory environments such as HIPAA.
 </tr>
 <tr>
   <td></td>
+  <td>CCE-89201-8</td>
+  <td>Uninstall libreport-plugin-logger Package</td>
+  <td xml:lang="en-US">
+The <code>libreport-plugin-logger</code> package can be removed with the following command:
+<pre>
+$ sudo yum erase libreport-plugin-logger</pre>
+  </td>
+  <td xml:lang="en-US">
+<tt>libreport-plugin-logger</tt> is a ABRT plugin to report bugs into the
+Red Hat Support system.
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>CCE-88955-0</td>
+  <td>Uninstall libreport-plugin-rhtsupport Package</td>
+  <td xml:lang="en-US">
+The <code>libreport-plugin-rhtsupport</code> package can be removed with the following command:
+<pre>
+$ sudo yum erase libreport-plugin-rhtsupport</pre>
+  </td>
+  <td xml:lang="en-US">
+<tt>libreport-plugin-rhtsupport</tt> is a ABRT plugin to report bugs into the
+Red Hat Support system.
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
   <td>CCE-82932-5</td>
   <td>Uninstall nfs-utils Package</td>
   <td xml:lang="en-US">
@@ -4075,22 +4055,6 @@ plugin for handling uncaught exceptions in python programs.
 </tr>
 <tr>
   <td></td>
-  <td>CCE-82859-0</td>
-  <td>Ensure rsyslog-gnutls is installed</td>
-  <td xml:lang="en-US">
-TLS protocol support for rsyslog is installed.
-The <code>rsyslog-gnutls</code> package can be installed with the following command:
-<pre>
-$ sudo yum install rsyslog-gnutls</pre>
-  </td>
-  <td xml:lang="en-US">
-The rsyslog-gnutls package provides Transport Layer Security (TLS) support
-for the rsyslog daemon, which enables secure remote logging.
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td></td>
   <td>CCE-82949-9</td>
   <td>Install scap-security-guide Package</td>
   <td xml:lang="en-US">
@@ -4147,25 +4111,6 @@ restrictive mount options, which can help protect programs which use it.
 </tr>
 <tr>
   <td></td>
-  <td>CCE-82458-1</td>
-  <td>Configure CA certificate for rsyslog remote logging</td>
-  <td xml:lang="en-US">
-Configure CA certificate for <tt>rsyslog</tt> logging
-to remote server using Transport Layer Security (TLS)
-using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
-global option in <tt>/etc/rsyslog.conf</tt>, for example with the following command:
-<pre>echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")' >> /etc/rsyslog.conf</pre>
-Replace the <tt>/etc/pki/tls/cert.pem</tt> in the above command with the path to the file with CA certificate generated for the purpose of remote logging.
-  </td>
-  <td xml:lang="en-US">
-The CA certificate needs to be set or <tt>rsyslog.service</tt>
-fails to start with
-<pre>error: ca certificate is not set, cannot continue</pre>
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td></td>
   <td>CCE-82880-6</td>
   <td>Configure session renegotiation for SSH client</td>
   <td xml:lang="en-US">
@@ -4187,7 +4132,7 @@ By decreasing the limit based on the amount of data and enabling
 time-based limit, effects of potential attacks against
 encryption keys are limited.
   </td>
-  <td>var_ssh_client_rekey_limit_size=1G<br/>var_ssh_client_rekey_limit_time=1hour</td>
+  <td>var_ssh_client_rekey_limit_time=1hour<br/>var_ssh_client_rekey_limit_size=1G</td>
 </tr>
 <tr>
   <td></td>
